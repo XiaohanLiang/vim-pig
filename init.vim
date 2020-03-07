@@ -45,22 +45,18 @@ syntax on
 " Vim NerdTree Settings
 map <F3> :nohlsearch<CR>
 nmap <F4> <ESC>:NERDTree<CR>
-"Smart way to move between windows
-"map <C-j> <C-W>j
-"map <C-k> <C-W>k
-"map <C-h> <C-W>h
-"map <C-l> <C-W>l
-
-
-inoremap <C-s> <esc> 
-nnoremap <C-s> i
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+nmap <C-w> <C-w>w
 
 autocmd Filetype go nmap <C-[> :GoReferrers<CR>
 autocmd Filetype go imap <C-[> <esc>:GoReferrers<CR>
+autocmd Filetype go nmap <C-f> :GoFillStruct<CR>
 
 nmap <C-h> H
 nmap <C-m> M
 nmap <C-l> L
+nmap <C-x> :q<CR>
 
 inoremap <C-e> <esc>$a
 inoremap <C-a> <esc>0i
