@@ -51,7 +51,12 @@ map Q <Nop>
 ""jump to line end/begining at insert mode
 inoremap <C-e> <esc>$a
 inoremap <C-a> <esc>0i
-
+""high/mid/low
+nmap <C-h> H
+nmap <C-m> M
+nmap <C-l> L
+""quick exit
+nmap <C-x> :q<CR>
 
 "NerdTree Settings
 map <F3> :nohlsearch<CR>
@@ -62,10 +67,6 @@ autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 ""switch between nerdtree and editor
 nmap <C-w> <C-w>w
-nmap <C-h> H
-nmap <C-m> M
-nmap <C-l> L
-nmap <C-x> :q<CR>
 
 
 call plug#begin('~/.vim/plugged')
