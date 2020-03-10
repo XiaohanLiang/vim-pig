@@ -17,11 +17,8 @@ set backspace=eol,start,indent
 set smartindent
 set incsearch
 set background=light
-
-autocmd Filetype html setlocal ts=2 sw=2 expandtab
-autocmd Filetype javascript setlocal ts=2 sw=2 expandtab
-autocmd Filetype css setlocal ts=2 sw=2 expandtab
-autocmd Filetype vue setlocal ts=2 sw=2 expandtab
+set relativenumber
+syntax on
 
 "Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
 "If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
@@ -40,26 +37,36 @@ if (empty($TMUX))
   endif
 endif
 
-syntax on
-
-" Vim NerdTree Settings
-map <F3> :nohlsearch<CR>
-nmap <F4> <ESC>:NERDTree<CR>
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-nmap <C-w> <C-w>w
-
+autocmd Filetype html setlocal ts=2 sw=2 expandtab
+autocmd Filetype javascript setlocal ts=2 sw=2 expandtab
+autocmd Filetype css setlocal ts=2 sw=2 expandtab
+autocmd Filetype vue setlocal ts=2 sw=2 expandtab
 autocmd Filetype go nmap <C-[> :GoReferrers<CR>
 autocmd Filetype go imap <C-[> <esc>:GoReferrers<CR>
 autocmd Filetype go nmap <C-f> :GoFillStruct<CR>
 
+"General Settings
+""disable ex mode
+map Q <Nop>
+""jump to line end/begining at insert mode
+inoremap <C-e> <esc>$a
+inoremap <C-a> <esc>0i
+
+
+"NerdTree Settings
+map <F3> :nohlsearch<CR>
+""open nerdtree
+nmap <F4> <ESC>:NERDTree<CR>
+""open nerdtree when no file was specified
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+""switch between nerdtree and editor
+nmap <C-w> <C-w>w
 nmap <C-h> H
 nmap <C-m> M
 nmap <C-l> L
 nmap <C-x> :q<CR>
 
-inoremap <C-e> <esc>$a
-inoremap <C-a> <esc>0i
 
 call plug#begin('~/.vim/plugged')
 
@@ -68,9 +75,6 @@ Plug 'joshdick/onedark.vim'
 
 "tree and tagbar
 Plug 'scrooloose/nerdtree'
-" Plug 'majutsushi/tagbar'
-" Plug 'pseewald/nerdtree-tagbar-combined'
-" Plug 'jistr/vim-nerdtree-tabs'
 
 "tag
 Plug 'ctrlpvim/ctrlp.vim'
@@ -87,7 +91,6 @@ Plug 'honza/vim-snippets'
 Plug 'ervandew/supertab'
 Plug 'jiangmiao/auto-pairs'
 Plug 'zchee/deoplete-go', { 'do': 'make'}
-
 Plug 'mileszs/ack.vim'
 
 "git
@@ -98,53 +101,17 @@ Plug 'mhinz/vim-signify'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'jodosha/vim-godebug'
 
-"php
-"Plug 'spf13/PIV'
-"Plug 'arnaud-lb/vim-php-namespace'
-"Plug 'beyondwords/vim-twig'
-
-" Javascript
-"Plug 'elzr/vim-json'
-"Plug 'groenewege/vim-less'
-"Plug 'pangloss/vim-javascript'
-"Plug 'briancollins/vim-jst'
-"Plug 'kchmck/vim-coffee-script'
-
-" TypeScript
-"Plug 'leafgarland/typescript-vim'
-" Plug 'mhartington/nvim-typescript'
-
-" Vue
-"Plug 'posva/vim-vue'
-"Plug 'w0rp/ale'
-" be sure to read full install instructions. this still needs
-" you to cd ~/.vim/plugged/YouCompleteMe
-" python ./install.py --js-completer
-"Plug 'Valloric/YouCompleteMe'
-"Plug 'ap/vim-css-color'
-"Plug 'leafgarland/typescript-vim'
-
-" Dart
-"Plug 'dart-lang/dart-vim-plugin'
-
 call plug#end()
 
-" let dart_style_guide = 2
-
 let g:ackprg = 'ag --nogroup --nocolor --column --ignore-dir=vendor --ignore-dir=doc --ignore-dir=.git'
-
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources#go#pointer = 1
 let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
 let g:deoplete#sources#go#gocode_binary = '/go/bin/gocode'
-
 let g:ycm_use_golang = 0
-
 let g:tagbar_compact = 1
 let g:ctrlp_extensions = ['tag']
 let g:go_autodetect_gopath = 1
-
-
 let g:rainbow_active = 0
 let g:rainbow_conf = {
             \'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
@@ -153,40 +120,6 @@ let g:rainbow_conf = {
 
 let g:SuperTabDefaultCompletionType = "<c-n>"
 let g:SuperTabContextDefaultCompletionType = "<c-n>"
-
-let g:ale_fixers = {'vue': ['remove_trailing_lines', 'trim_whitespace']}
-let g:ale_fix_on_save = 1
-
-"let b:ale_linters = ['eslint']
-"let g:ale_linters = {'javascript': ['eslint']}
-"let g:ale_linter_aliases = {'vue': ['javascript', 'html', 'scss']}
-
-let g:ale_linter_aliases = {'vue': ['vue', 'javascript']}
-let g:ale_linters = {'vue': ['eslint', 'vls']}
-
-" Do not lint or fix minified files.
-let g:ale_pattern_options = {
-\ '\.min\.js$': {'ale_linters': [], 'ale_fixers': []},
-\ '\.min\.css$': {'ale_linters': [], 'ale_fixers': []},
-\}
-" If you configure g:ale_pattern_options outside of vimrc, you need this.
-let g:ale_pattern_options_enabled = 1
-
-"let g:ale_linters_explicit = 1
-
-let g:ale_completion_enabled = 0
-
 let g:go_def_mode = 'godef'
-
-"let g:deoplete#sources#go#package_dot = 1
-
-"let g:UltiSnipsExpandTrigger="<tab>"
-"let g:UltiSnipsJumpForwardTrigger="<c-b>"
-"let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-
-"map <C-n> :cnext<CR>
-"map <C-m> :cprevious<CR>
-"nnoremap <leader>a :cclose<CR>
 let g:go_fmt_command = "goimports"
 
-let g:nvim_typescript#default_mappings = 1
