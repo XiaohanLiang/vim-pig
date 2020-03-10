@@ -58,6 +58,7 @@ nmap <C-l> L
 ""quick exit
 nmap <C-x> :q<CR>
 
+
 "NerdTree Settings
 map <F3> :nohlsearch<CR>
 ""open nerdtree
@@ -102,6 +103,9 @@ Plug 'mhinz/vim-signify'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'jodosha/vim-godebug'
 
+"comment
+Plug 'preservim/nerdcommenter'
+
 call plug#end()
 
 let g:ackprg = 'ag --nogroup --nocolor --column --ignore-dir=vendor --ignore-dir=doc --ignore-dir=.git'
@@ -123,4 +127,4 @@ let g:SuperTabDefaultCompletionType = "<c-n>"
 let g:SuperTabContextDefaultCompletionType = "<c-n>"
 let g:go_def_mode = 'godef'
 let g:go_fmt_command = "goimports"
-
+let g:NERDSpaceDelims = 1
