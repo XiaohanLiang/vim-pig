@@ -49,6 +49,10 @@ function set_up_vim_go(){
     export GOBIN="$location/bin"
     echo "installing guru"
     go get -u golang.org/x/tools/cmd/guru
+    echo "installing gogetdoc"
+    go get -u github.com/zmb3/gogetdoc
+    echo "installing asmfmt"
+    go get -u github.com/klauspost/asmfmt/cmd/asmfmt
     echo "installing gopls"
     go get -u golang.org/x/tools/gopls
     echo "installing fillstruct"

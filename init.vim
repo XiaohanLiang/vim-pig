@@ -18,6 +18,7 @@ set smartindent
 set incsearch
 set background=light
 set relativenumber
+hi Folded ctermbg=015
 syntax on
 
 "Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
@@ -56,8 +57,9 @@ nmap <C-h> H
 nmap <C-m> M
 nmap <C-l> L
 ""quick exit
-nmap <C-x> :q<CR>
-
+nmap <C-x> ZQ
+nmap { <C-[>
+nmap } <C-]>
 
 "NerdTree Settings
 map <F3> :nohlsearch<CR>
