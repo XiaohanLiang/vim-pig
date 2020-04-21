@@ -42,27 +42,50 @@ autocmd Filetype html setlocal ts=2 sw=2 expandtab
 autocmd Filetype javascript setlocal ts=2 sw=2 expandtab
 autocmd Filetype css setlocal ts=2 sw=2 expandtab
 autocmd Filetype vue setlocal ts=2 sw=2 expandtab
-autocmd Filetype go nmap <C-[> :GoReferrers<CR>
-autocmd Filetype go imap <C-[> <esc>:GoReferrers<CR>
-autocmd Filetype go nmap <C-f> :GoFillStruct<CR>
+"autocmd Filetype go nmap <C-[> :GoReferrers<CR>
 
 "General Settings
+
 ""disable ex mode
 map Q <Nop>
+
 ""jump to line end/begining at insert mode
 inoremap <C-e> <esc>$a
 inoremap <C-a> <esc>0i
-""high/mid/low
-nmap <C-h> H
-nmap <C-m> M
-nmap <C-l> L
-""quick exit
+""exiting
 nmap <C-x> ZQ
-nmap { <C-[>
-nmap } <C-]>
+
+""saving
+imap <C-j> <C-c>:w<CR>
+nmap <C-j> :w<CR>
+
+""commanding
+nmap <C-k> :!
+imap <C-k> <C-c>:!
+
+""you just cant..
+noremap o <Nop>
+noremap p <Nop>
+noremap <C-o> o
+noremap <C-p> p
+nnoremap <C-l> <C-o>
+
+""disable arrows and esc
+noremap <Up> <Nop>
+noremap <Down> <Nop>
+noremap <Left> <Nop>
+noremap <Right> <Nop>
+inoremap <Up> <Nop>
+inoremap <Down> <Nop>
+inoremap <Left> <Nop>
+inoremap <Right> <Nop>
+noremap <esc> <Nop>
+inoremap <esc> <Nop>
+inoremap <C-v> <C-c>
+
 
 "NerdTree Settings
-map <F3> :nohlsearch<CR>
+
 ""open nerdtree
 nmap <F4> <ESC>:NERDTree<CR>
 ""open nerdtree when no file was specified
@@ -81,7 +104,7 @@ Plug 'joshdick/onedark.vim'
 Plug 'scrooloose/nerdtree'
 
 "tag
-Plug 'ctrlpvim/ctrlp.vim'
+"Plug 'ctrlpvim/ctrlp.vim'
 
 "style
 Plug 'vim-airline/vim-airline'
@@ -90,12 +113,11 @@ Plug 'luochen1990/rainbow'
 
 "completion
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
+"Plug 'SirVer/ultisnips'
+"Plug 'honza/vim-snippets'
 Plug 'ervandew/supertab'
 Plug 'jiangmiao/auto-pairs'
 Plug 'zchee/deoplete-go', { 'do': 'make'}
-Plug 'mileszs/ack.vim'
 
 "git
 Plug 'tpope/vim-fugitive'
@@ -115,6 +137,8 @@ let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources#go#pointer = 1
 let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
 let g:deoplete#sources#go#gocode_binary = '/go/bin/gocode'
+set completeopt-=preview
+
 let g:ycm_use_golang = 0
 let g:tagbar_compact = 1
 let g:ctrlp_extensions = ['tag']
@@ -127,6 +151,6 @@ let g:rainbow_conf = {
 
 let g:SuperTabDefaultCompletionType = "<c-n>"
 let g:SuperTabContextDefaultCompletionType = "<c-n>"
-let g:go_def_mode = 'godef'
+"let g:go_def_mode='godef'
 let g:go_fmt_command = "goimports"
 let g:NERDSpaceDelims = 1
