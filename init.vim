@@ -10,7 +10,6 @@ set fileencodings=utf-8,gbk
 set termencoding=utf-8
 set encoding=utf-8
 set bs=indent,eol,start
-
 set cursorline
 set hlsearch
 set backspace=eol,start,indent
@@ -18,60 +17,27 @@ set smartindent
 set incsearch
 set background=light
 set relativenumber
+set guicursor+=a:blinkon0
+set belloff=all
 hi Folded ctermbg=015
 syntax on
+cnoreabbrev ack Ack
 
-"Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
-"If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
-"(see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
-if (empty($TMUX))
-  if (has("nvim"))
-    "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
-    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-    let g:onedark_termcolors=256
-  endif
-  "For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
-  "Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
-  " < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
-  if (has("termguicolors"))
-      "set termguicolors
-  endif
-endif
 
 autocmd Filetype html setlocal ts=2 sw=2 expandtab
 autocmd Filetype javascript setlocal ts=2 sw=2 expandtab
 autocmd Filetype css setlocal ts=2 sw=2 expandtab
 autocmd Filetype vue setlocal ts=2 sw=2 expandtab
-"autocmd Filetype go nmap <C-[> :GoReferrers<CR>
+augroup typescript
+  au!
+  autocmd BufNewFile,BufRead *.tsx  setlocal filetype=typescript ts=2 sw=2 expandtab
+  autocmd BufNewFile,BufRead *.tsx  set syntax=typescriptreact ts=2 sw=2 expandtab
+  autocmd BufNewFile,BufRead *.ts   set filetype=typescript ts=2 sw=2 expandtab
+  autocmd BufNewFile,BufRead *.ts   set syntax=javascript ts=2 sw=2 expandtab
+augroup END
 
-"General Settings
 
-""disable ex mode
-map Q <Nop>
-
-""jump to line end/begining at insert mode
-inoremap <C-e> <esc>$a
-inoremap <C-a> <esc>0i
-""exiting
-nmap <C-x> ZQ
-
-""saving
-imap <C-j> <C-c>:w<CR>
-nmap <C-j> :w<CR>
-
-""commanding
-nmap <C-k> :!
-imap <C-k> <C-c>:!
-
-""you just cant..
-noremap o <Nop>
-noremap p <Nop>
-noremap <C-o> o
-noremap <C-p> p
-nnoremap <C-l> <C-o>
-
-""disable arrows and esc
-noremap <Up> <Nop>
+noremap <Up> <Nop>              "" 禁用方向键
 noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
@@ -79,60 +45,64 @@ inoremap <Up> <Nop>
 inoremap <Down> <Nop>
 inoremap <Left> <Nop>
 inoremap <Right> <Nop>
-noremap <esc> <Nop>
-inoremap <esc> <Nop>
 inoremap <C-v> <C-c>
-
-
-"NerdTree Settings
-
-""open nerdtree
-nmap <F4> <ESC>:NERDTree<CR>
-""open nerdtree when no file was specified
-autocmd StdinReadPre * let s:std_in=1
+imap <C-a> <Nop>                "" 忽略ctrl-a
+map Q <Nop>                     "" 关闭ex模式
+nmap <C-n> :tabprevious<cr>     "" 上/下一个标签
+nmap <C-m> :tabnext<cr>
+imap <C-c> <esc>                "" 通过ctrl-c进入normal
+nmap <C-x> ZQ                   "" 退出
+imap <C-j> <C-c>:w<CR>          "" 快速保存
+nmap <C-j> :w<CR>
+nmap <C-f> [[zt                 "" 函数置顶
+imap <C-f> <esc>[[ztja
+nmap <C-k> :!                   "" ctrl-k进入命令行
+imap <C-k> <C-c>:!
+noremap o <Nop>                 "" 将o/p切换成ctrl-o/p
+noremap p <Nop>
+noremap <C-o> o
+noremap <C-p> p
+nnoremap <C-l> <C-o>
+nmap <C-g> :!make<CR>                 "" 当场编译
+nmap <F4> <ESC>:NERDTree<CR>          "" 打开文件树
+nmap <C-w> <C-w>w                     "" 切换文件树与编辑区
+autocmd StdinReadPre * let s:std_in=1 "" 没有指定文件的时候自动打开文件树
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-""switch between nerdtree and editor
-nmap <C-w> <C-w>w
 
 
 call plug#begin('~/.vim/plugged')
 
-"colorscheme
-Plug 'joshdick/onedark.vim'
+Plug 'joshdick/onedark.vim'           " 某种主题
+Plug 'scrooloose/nerdtree'            " 文件树
+Plug 'vim-airline/vim-airline'        " 状态栏
+Plug 'vim-airline/vim-airline-themes' " 状态栏主题
+Plug 'luochen1990/rainbow'            " 彩色括号
 
-"tree and tagbar
-Plug 'scrooloose/nerdtree'
+Plug 'tpope/vim-commentary'    " 注释
+Plug 'preservim/nerdcommenter' " 注释
+Plug 'mileszs/ack.vim'         " ack搜索
+Plug 'tpope/vim-fugitive'      " git内置
+Plug 'mhinz/vim-signify'       " 显示gitdiff
 
-"tag
-"Plug 'ctrlpvim/ctrlp.vim'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } " 补全工具组
+Plug 'zchee/deoplete-go', { 'do': 'make'}                     " 补全工具Golang
+Plug 'honza/vim-snippets'                                     " 补全小工具组
+Plug 'ervandew/supertab'                                      " tab进入补全弹窗
+Plug 'jiangmiao/auto-pairs'                                   " 补齐另一个括号
 
-"style
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'luochen1990/rainbow'
-
-"completion
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-"Plug 'SirVer/ultisnips'
-"Plug 'honza/vim-snippets'
-Plug 'ervandew/supertab'
-Plug 'jiangmiao/auto-pairs'
-Plug 'zchee/deoplete-go', { 'do': 'make'}
-
-"git
-Plug 'tpope/vim-fugitive'
-Plug 'mhinz/vim-signify'
-
-"golang
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'jodosha/vim-godebug'
-
-"comment
-Plug 'preservim/nerdcommenter'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go'}  " golang 套件
+Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }      " ts 套件
+Plug 'Quramy/tsuquyomi', { 'for': 'typescript' }                " ts 套件
+Plug 'jason0x43/vim-js-indent', { 'for': 'typescript' }         " ts 套件
+Plug 'Shougo/vimproc.vim', {'do' : 'make', 'for': 'typescript'} " ts 套件
 
 call plug#end()
 
-let g:ackprg = 'ag --nogroup --nocolor --column --ignore-dir=vendor --ignore-dir=doc --ignore-dir=.git'
+
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+let g:onedark_termcolors=256
+
+let g:ackprg = "/usr/local/bin/ack -s -H --nocolor --nogroup --column"
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources#go#pointer = 1
 let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
@@ -143,7 +113,7 @@ let g:ycm_use_golang = 0
 let g:tagbar_compact = 1
 let g:ctrlp_extensions = ['tag']
 let g:go_autodetect_gopath = 1
-let g:rainbow_active = 0
+let g:rainbow_active = 1
 let g:rainbow_conf = {
             \'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
             \'ctermfgs': ['blue', 'magenta', 'red', 'black'],
@@ -154,3 +124,13 @@ let g:SuperTabContextDefaultCompletionType = "<c-n>"
 "let g:go_def_mode='godef'
 let g:go_fmt_command = "goimports"
 let g:NERDSpaceDelims = 1
+
+" X - 试验区
+" Plug 'ianding1/leetcode.vim'
+" Plug 'vim-scripts/applescript' 
+" Plug 'shougo/vimshell.vim'
+"set shell=/usr/local/bin/zsh
+"set shellcmdflag=-ic
+"let g:leetcode_china = 1
+"let g:leetcode_solution_filetype = 'golang'
+"let g:leetcode_browser = 'chrome'
