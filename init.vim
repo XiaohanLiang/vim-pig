@@ -20,9 +20,7 @@ set relativenumber
 set guicursor+=a:blinkon0
 set belloff=all
 hi Folded ctermbg=015
-syntax on
 cnoreabbrev ack Ack
-
 
 autocmd Filetype html setlocal ts=2 sw=2 expandtab
 autocmd Filetype javascript setlocal ts=2 sw=2 expandtab
@@ -31,9 +29,9 @@ autocmd Filetype vue setlocal ts=2 sw=2 expandtab
 augroup typescript
   au!
   autocmd BufNewFile,BufRead *.tsx  setlocal filetype=typescript ts=2 sw=2 expandtab
-  autocmd BufNewFile,BufRead *.tsx  set syntax=typescriptreact ts=2 sw=2 expandtab
-  autocmd BufNewFile,BufRead *.ts   set filetype=typescript ts=2 sw=2 expandtab
-  autocmd BufNewFile,BufRead *.ts   set syntax=javascript ts=2 sw=2 expandtab
+  autocmd BufNewFile,BufRead *.tsx  setlocal syntax=typescriptreact ts=2 sw=2 expandtab
+  autocmd BufNewFile,BufRead *.ts   setlocal filetype=typescript ts=2 sw=2 expandtab
+  autocmd BufNewFile,BufRead *.ts   setlocal syntax=javascript ts=2 sw=2 expandtab
 augroup END
 
 
@@ -50,19 +48,20 @@ imap <C-a> <Nop>                "" 忽略ctrl-a
 map Q <Nop>                     "" 关闭ex模式
 nmap <C-n> :tabprevious<cr>     "" 上/下一个标签
 nmap <C-m> :tabnext<cr>
-imap <C-c> <esc>                "" 通过ctrl-c进入normal
+" imap <C-c> <esc>               
 nmap <C-x> ZQ                   "" 退出
 imap <C-j> <C-c>:w<CR>          "" 快速保存
 nmap <C-j> :w<CR>
 nmap <C-f> [[zt                 "" 函数置顶
-imap <C-f> <esc>[[ztja
-nmap <C-k> :!                   "" ctrl-k进入命令行
+imap <C-f> <esc>[[zt
+nmap <C-k> :!
 imap <C-k> <C-c>:!
 noremap o <Nop>                 "" 将o/p切换成ctrl-o/p
 noremap p <Nop>
 noremap <C-o> o
 noremap <C-p> p
 nnoremap <C-l> <C-o>
+nmap <F5> :noh<CR>
 nmap <C-g> :!make<CR>                 "" 当场编译
 nmap <F4> <ESC>:NERDTree<CR>          "" 打开文件树
 nmap <C-w> <C-w>w                     "" 切换文件树与编辑区
@@ -84,6 +83,7 @@ Plug 'mileszs/ack.vim'         " ack搜索
 Plug 'tpope/vim-fugitive'      " git内置
 Plug 'mhinz/vim-signify'       " 显示gitdiff
 
+Plug 'SirVer/ultisnips'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } " 补全工具组
 Plug 'zchee/deoplete-go', { 'do': 'make'}                     " 补全工具Golang
 Plug 'honza/vim-snippets'                                     " 补全小工具组
@@ -101,6 +101,7 @@ call plug#end()
 
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 let g:onedark_termcolors=256
+syntax on " 必须放在后面否则相当于没开
 
 let g:ackprg = "/usr/local/bin/ack -s -H --nocolor --nogroup --column"
 let g:deoplete#enable_at_startup = 1
